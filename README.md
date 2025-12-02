@@ -8,14 +8,17 @@ Linguagens utilizadas: python 3.12.10 e mysql 10.4.32
 
                         Estrutura das tabelas
 
--> Clientes: cpf, nome, telefone, email, senha
+-> Clientes: cpf(chave primária), nome, telefone, email, senha
 
--> Funcionários: nome, senha, id
+-> Funcionários: nome, senha, id (chave primária)
 
--> Livro: ISBN, Titulo, Autor, Ano de Publicação, quantidade, data de atualização de estoque
+-> Livro: ISBN (chave primária), Titulo, Autor, Ano de Publicação, quantidade, data de atualização de estoque
 
--> Alugúeis: id, cpf do cliente, isbn do livro data do aluguel, data da
+-> Alugúeis: id, cpf do cliente (chave estrangeira), isbn do livro(chave estrangeira), data do aluguel, data da
 devolução.
+
+Observação: A tabela aluguéis terá como objetivo utilizar as chaves estrangeiras para interligar as tabelas clientes e livros com o objetivo
+de conseguirmos registrar todos os alugúeis feitos no sistema. 
 
                          Componentes do sistema
 
@@ -41,7 +44,22 @@ Tela de exclusão de livros: Tela que o funcionário podera excluir livros.
 Tela de livros disponiveis: Irá conter as informações de todos os livros
 cadastrados pelos funcionários
 
-tela de livros alugados pelos clientes: irá conter as informações dos livros que o cliente logado
+Tela de livros alugados pelos clientes: irá conter as informações dos livros que o cliente logado
 no sistema alugou.
 
+Tela de atualização de cadastros de clientes: Tela que o usuário irá atualizar os dados (o telefone por exemplo)
 
+Tela de atualização de senha de funcionários: Tela que o funcionário poderá atualizar a sua senha.
+
+Tela de exclusão de funcionários: Onde funcionários podem excluir outros funcionários.
+
+
+                            Regras do sistema
+
+-> Um cliente pode alugar quantos livros ele quiser
+
+-> Somente funcionários podem cadastrar outros funcionários
+
+-> Somente funcionários podem excluir funcionários
+
+-> Todos os clientes deverão ficar apenas 30 dias com os livros
