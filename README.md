@@ -63,3 +63,19 @@ Tela de exclusão de funcionários: Onde funcionários podem excluir outros func
 -> Somente funcionários podem excluir funcionários
 
 -> Todos os clientes deverão ficar apenas 30 dias com os livros
+
+-> Os campos de cadastro de clientes não podem ser nulos
+
+-> 
+
+
+                            Estruturas dos arquivos
+BancoManipulação.py: Arquivo irá manipular o banco de dados. Nesse arquivo iremos trabalhar a comunicação do
+usuário com o servidor para realizar inserções, atualizações, exclusões e consultas.
+
+BancoConstrução.ipynb: Onde iremos construir toda a estrutura do banco de dados e realizar testes (como
+por exemplo, selects que mostram se um registro foi criado ou não no banco de dados).
+
+Biblioteca: Ira conter as funcionalidades dos clientes e funcionários. Esse arquivo irá possibilitar
+que os usuários enviem requisições ao servidor.
+
