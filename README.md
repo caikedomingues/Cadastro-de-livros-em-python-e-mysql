@@ -53,6 +53,9 @@ Tela de atualização de senha de funcionários: Tela que o funcionário poderá
 
 Tela de exclusão de funcionários: Onde funcionários podem excluir outros funcionários.
 
+logout de clientes: Permite que o cliente saia da sua conta.
+
+logout de funcionários: Permite que o funcionário saia da sua conta.
 
                             Regras do sistema
 
@@ -66,7 +69,9 @@ Tela de exclusão de funcionários: Onde funcionários podem excluir outros func
 
 -> Os campos de cadastro de clientes não podem ser nulos
 
--> 
+-> O cliente deve logar no sistema utilizando cpf e senha.
+
+-> O funcionário deverá logar no sistema usando nome e senha 
 
 
                             Estruturas dos arquivos

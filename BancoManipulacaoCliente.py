@@ -111,4 +111,93 @@ def cadastracliente(cpf, nome, telefone, email, senha):
         conexao.close()
     
 
-
+# Função que irá permitir que o usuário faça login no sistema. A função
+# irá receber como argumento o cpf (que será utilizado na criação da sessão do usuáfrio que tem como objetivo, evitar que as ações de um
+# usuário prejudiquem outros) e a senha.
+def tela_login_cliente(cpf, senha):
+   
+   # Irá inspecionar o bloco de código com o objetivo de capturar possiveis erros.
+    try:
+        
+        # Ira realizar a conexão com o banco de dados. 
+        conexao = conectar()
+        
+        # Ira realizar a comunicação com o servidor (envio de requisições)
+        cursor = conexao.cursor()
+        
+        # Ira selecionar a senha do cpf informado pelo cliente (comand
+        # executado da maneira segura)
+        selecao = "SELECT senha FROM clientes WHERE cpf = %s"
+        
+        # Ira executar o comando sql
+        cursor.execute(selecao, (cpf))
+        
+        # Ira usar a função fetchone que armazena o valor selecionado
+        # pelo cursor (no caso a senha do cpf informado)
+        resultado = cursor.fetchone()
+        
+        # Se a variável não tiver nenhum resultado, ou seja, uma senha,
+        # significa que o cpf informado não foi encontrado no sistema.
+        if resultado is None:
+            
+            # Se essa condição for verdadeira, vamos imprimir
+            # essa mensagem retornar o valor None (que impedirá
+            # a criação da sessão)
+            print("O cpf incorreto, tente novamente")
+            
+            return None
+        
+        # Após a validação do cpf (que irá atribuir a variável senha_criptografada o None ou a senha requisitada), vamos
+        # acessar o valor selecionado (a senha ou o none) com o
+        # objetivo de iniciar a verificação da senha. 
+        senha_criptografada = resultado[0]
+        
+        # Irá transformar a senha informada e a senha criptograda
+        # em uma sequência de bytes (números binários) com o objetivo
+        # de padronizar os dados para a comparação no checkpw
+        senha_informada = senha.encode('utf-8')
+        
+        hash_bytes = senha_criptografada.encode('utf-8')
+        
+        # Irá verificar se a senha informada é igual a senha
+        # armazenada no banco de dados usando a função checkpw
+        # da biblioteca bcrypt que retorna um valor booleano
+        # onde True é que as senhas são iguais e False quando
+        # a senha é diferente. A função recebe como argumento
+        # a senha informada e a senha armazenada (senha criptografada
+        # no sistema).
+        if bcrypt.checkpw(senha_informada, hash_bytes):
+            
+            # Se a condição for verdadeira, vamos imprimir essa mensagem
+            # e retornar o cpf informado pelo usuário para a criação da 
+            # sessão.
+            print("Login realizado com sucesso")
+            
+            return cpf
+        
+        else:
+            
+            # Caso contrário, mostraremos essa mensagem e retornaremos
+            # o None que não criará a sessão do usuário.
+            print("Senha incorreta, tente novamente")
+            
+            return None
+        
+        
+                   
+    except pymysql.ProgrammingError as erro:
+        
+        # Irá tratar erros relacionados a sintaxe ou lógica    
+        print("Falha na realização do login: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros na comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Ira encerrar a conexão com o objetivo de evitar o vazamento
+        # de dados.
+        conexao.close()
+            
