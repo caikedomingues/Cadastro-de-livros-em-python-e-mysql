@@ -40,7 +40,6 @@ def conectar():
     
     return conexao
 
-
 # Função que irá cadastrar clientes no sistema da biblioteca usando os
 # argumentos cpf, nome, telefone, email, senha
 def cadastracliente(cpf, nome, telefone, email, senha):
@@ -112,7 +111,7 @@ def cadastracliente(cpf, nome, telefone, email, senha):
     
 
 # Função que irá permitir que o usuário faça login no sistema. A função
-# irá receber como argumento o cpf (que será utilizado na criação da sessão do usuáfrio que tem como objetivo, evitar que as ações de um
+# irá receber como argumento o cpf (que será utilizado na criação da sessão do usuário que tem como objetivo, evitar que as ações de um
 # usuário prejudiquem outros) e a senha.
 def tela_login_cliente(cpf, senha):
    
@@ -125,7 +124,7 @@ def tela_login_cliente(cpf, senha):
         # Ira realizar a comunicação com o servidor (envio de requisições)
         cursor = conexao.cursor()
         
-        # Ira selecionar a senha do cpf informado pelo cliente (comand
+        # Ira selecionar a senha do cpf informado pelo cliente (comando
         # executado da maneira segura)
         selecao = "SELECT senha FROM clientes WHERE cpf = %s"
         
