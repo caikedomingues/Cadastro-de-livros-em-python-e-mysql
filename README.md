@@ -23,10 +23,10 @@ de conseguirmos registrar todos os alugúeis feitos no sistema.
                          Componentes do sistema
 
 Tela de Login Para Clientes: Local onde os clientes irão realizar o seu 
-login no sistema
+login no sistema (com cpf e senha)
 
 Tela de login para funcionários: Tela onde os funcionarios poderão
-realizar o seu login no sistema
+realizar o seu login no sistema (com id e senha)
 
 Tela de cadastro de clientes: Tela onde os clientes irão criar cadastros
 no sistema

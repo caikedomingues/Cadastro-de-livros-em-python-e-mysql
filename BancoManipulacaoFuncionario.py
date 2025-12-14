@@ -101,3 +101,61 @@ def cadastroFuncionario(nome, senha):
         
         # Ira encerrar a conexão com o objetivo de evitar o vazamento de dados
         conexao.close()
+
+
+
+
+def tela_login_funcionario(id, senha):
+    
+    try:
+        conexao = conectar()
+        
+        cursor = conexao.cursor()
+        
+        selecao = "SELECT senha FROM funcionarios WHERE id = %s"
+        
+        cursor.execute(selecao, (id))
+        
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            
+            print("O id informado não existe no sistema")
+            
+            return None
+        
+        senha_criptografada = resultado[0]
+        
+        senha_informada = senha.encode('utf-8')
+        
+        hash_bytes = senha_criptografada.encode('utf-8')
+        
+        if bcrypt.checkpw(senha_informada, hash_bytes):
+            
+            print("Login realizado com sucesso")
+            
+            return id
+        
+        else:
+            
+            print("Senha incorreta, tente novamente")
+            
+            return None
+    
+    except pymysql.ProgrammingError as erro:
+        
+        print("Falha na realização do login: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        conexao.close()
+
+
+    
+    
+    
+    
