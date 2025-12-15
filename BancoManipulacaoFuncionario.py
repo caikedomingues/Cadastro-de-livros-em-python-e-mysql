@@ -104,58 +104,118 @@ def cadastroFuncionario(nome, senha):
 
 
 
-
+# Função que irá realizar o login de funcionarios usando como argumento
+# o id e a senha do funcionário.
 def tela_login_funcionario(id, senha):
     
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis erros de execução do código.
     try:
+        
+        # Ira chamar a conexão com o servidor
         conexao = conectar()
         
+        # Irá enviar requisições ao servidor 
         cursor = conexao.cursor()
         
+        # Ira selecionar a senha no banco com base no id informado
+        # pelo usuário. (de forma segura)
         selecao = "SELECT senha FROM funcionarios WHERE id = %s"
         
+        # Ira executar o comando usando o id informado pelo usuário
         cursor.execute(selecao, (id))
         
+        # Ira armazenar a senha selecionada ou o None (caso
+        # o id informado não exista no sistema)
         resultado = cursor.fetchone()
         
         if resultado is None:
             
+            # Se o resultado for none, ou seja, se o id informado
+            # não existir no sistema, vamos imprimir essa mensagem e 
+            # retorna o valor None
             print("O id informado não existe no sistema")
             
             return None
         
+        # Ira armazenar o valor da variável resultado 
         senha_criptografada = resultado[0]
         
+        # Ira transformar a senha informada e a senha criptografada
+        # em um conjunto de bytes (dados binarios) com o objetivo
+        # de padronizar as senhas e realizar a verificação
         senha_informada = senha.encode('utf-8')
         
         hash_bytes = senha_criptografada.encode('utf-8')
         
+        # Ira verificar o o resultado da função checkpw da biblioteca bcrypt que tem como objetivo verificar se a senha informada é
+        # igual a senha criptografada.
         if bcrypt.checkpw(senha_informada, hash_bytes):
             
+            # Se o resultado da função for verdadeiro vamos
+            # imprimir essa mensagem e retornar o id do usuário
+            # para a criação da sessão do funcionário
             print("Login realizado com sucesso")
             
             return id
         
         else:
             
+            # Se a senha estiver incorreta, vamos imprimir essa mensagem
+            # e retornar o valor None que tem impedira a criação da
+            # sessão.
             print("Senha incorreta, tente novamente")
             
             return None
     
     except pymysql.ProgrammingError as erro:
         
+        # Irá lidar com erros relacionados a lógica ou sintaxe
         print("Falha na realização do login: ", erro)
     
     except pymysql.OperationalError as erro:
         
+        # Ira lidar com erros na comunicação do servidor
         print("Falha na comunicação com o servidor: ", erro)
     
     finally:
         
+        # Ira fechar a conexão com o objetivo de evitar o vazamento de
+        # dados
         conexao.close()
 
 
+# Função que irá     
+def cadastrarLivro(isbn, titulo, autor, ano_publicacao, quantidade):
     
+    try:
+        
+        conexao = conectar()
+        
+        cursor = conexao.cursor()
+        
+        insercao = "INSERT INTO livros (isbn, titulo, autor, ano_publicacao, quantidade) VALUES (%s, %s, %s, %s, %s)"
+
+        cursor.execute(insercao, (isbn, titulo, autor, ano_publicacao, quantidade))
+
+        conexao.commit()
+        
+        print("Livro cadastrado com sucesso")
     
+    except pymysql.ProgrammingError as erro:
+        
+        # Irá tratar erros relacionados a sintaxe ou lógica, como por exemplo,
+        # inserção de dados que já existem no sistema
+        print("Erro ao cadastrar o livro: ", erro)
     
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar os erros relacionados a comunicação com o servidor.
+        print("Falha na comunicação com o servidor: ", erro)
     
+    finally:
+        
+        # Ira encerrar a conexão com o objetivo de evitar vazamento de dados.
+        conexao.close()
+    
+
+        
