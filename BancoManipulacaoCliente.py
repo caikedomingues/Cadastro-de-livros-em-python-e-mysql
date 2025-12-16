@@ -199,4 +199,70 @@ def tela_login_cliente(cpf, senha):
         # Ira encerrar a conexão com o objetivo de evitar o vazamento
         # de dados.
         conexao.close()
+
+
+# Função que irá realizar consultas no banco de dados com o objetivo de 
+# exibir os livros disponíveis no sistema.
+def exibir_livros_disponiveis():
+    
+    # Ira inspecionar o bloco de código com o objetivo de capturar possiveis
+    # erros de execução do trecho de código.
+    try:
+         
+        # Ira chamar a função que nos conecta ao servidor
+        conexao = conectar()
+        
+        # Será responsável por enviar requisições ao servidor (a requisição
+        # GET no caso)
+        cursor = conexao.cursor()
+        
+        # Ira conter o comando que seleciona todas as informações dos livros
+        # cadastrados
+        selecao = "SELECT * FROM livros"
+        
+        # Ira executar a ci=onsulta e enviar a requisição ao servidor
+        cursor.execute(selecao)
+        
+        # Ira armazenar o valor de todas as linhas da tabela de livro
+        livros = cursor.fetchall()
+        
+        # A diferença entre fetchall e fetchone:
+        # fetchall: Pega todas as linhas encontradas pela busca de uma vez
+        # fetchone: Pega apenas uma única linha (a próxima da fila)
+        
+        # Ira verificar se há tabela possui valores, ou seja, se a tabela possui livros cadastrados. 
+        if len(livros) > 0:
             
+            # Se houver livros cadastrados, iremos percorrer a variável
+            # livro que contém os resultados armazenados com o objetivo de
+            # imprimir as informações na tela.
+            for livro in livros:
+
+                print(livro)
+                print("---------------------------------------------------------------")
+                
+
+        else:
+            
+            # Mensagem que será impressa caso a tabela não tenha livros cadastrados.
+            print("Não há livros disponíveis no momento")
+
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros de lógica ou sintaxe     
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros de comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Irá encerrar a conexão com o objetivo de evitar vazamento de dados.
+        conexao.close()
+        
+
+        
+    
+    
