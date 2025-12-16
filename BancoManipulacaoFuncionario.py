@@ -184,21 +184,30 @@ def tela_login_funcionario(id, senha):
         conexao.close()
 
 
-# Função que irá     
+# Função que irá possibilitar que funcionários cadastrem livros no sistema usando os argumentos isbn, titulo, autor, ano de publicação e quantidade     
 def cadastrarLivro(isbn, titulo, autor, ano_publicacao, quantidade):
     
+    # Irá inspcionar o bloco de código com o objetivo de capturar 
+    # possiveis erros. 
     try:
         
+        # Ira chamar a função que conecta o python ao banco de dados
         conexao = conectar()
         
+        # Sera responsável por enviar os comandos sql (requisições)
+        # ao servidor.
         cursor = conexao.cursor()
         
+        # Ira conter o comando de inserção do mysql (de forma segura)
         insercao = "INSERT INTO livros (isbn, titulo, autor, ano_publicacao, quantidade) VALUES (%s, %s, %s, %s, %s)"
-
+        
+        # Ira executar (enviar a requisição) o comando sql 
         cursor.execute(insercao, (isbn, titulo, autor, ano_publicacao, quantidade))
 
+        # Ira gravar a inserção no servidor.
         conexao.commit()
         
+        # Mensagem de sucesso da inserção
         print("Livro cadastrado com sucesso")
     
     except pymysql.ProgrammingError as erro:
