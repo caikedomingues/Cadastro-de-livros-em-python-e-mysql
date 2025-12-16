@@ -57,6 +57,8 @@ logout de clientes: Permite que o cliente saia da sua conta.
 
 logout de funcionários: Permite que o funcionário saia da sua conta.
 
+Tela de informações de clientes : Tela que possibilitara que o funcionário visualize os alugueis de clientes.
+
                             Regras do sistema
 
 -> Um cliente pode alugar quantos livros ele quiser
