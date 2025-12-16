@@ -75,12 +75,16 @@ logout de funcionários: Permite que o funcionário saia da sua conta.
 
 
                             Estruturas dos arquivos
-BancoManipulação.py: Arquivo irá manipular o banco de dados. Nesse arquivo iremos trabalhar a comunicação do
+BancoManipulaçãoCliente.py: Arquivo que irá manipular o banco de dados. Nesse arquivo iremos trabalhar a comunicação do
 usuário com o servidor para realizar inserções, atualizações, exclusões e consultas.
+
+BancoManipulaçãoFuncionario.py: Arquivo que irá manipular o banco de dados. Nesse arquivo iremos trabalhar a comunicação do
+funcionário com o servidor para realizar inserções, atualizações, exclusões e consultas.
 
 BancoConstrução.ipynb: Onde iremos construir toda a estrutura do banco de dados e realizar testes (como
 por exemplo, selects que mostram se um registro foi criado ou não no banco de dados).
 
-Biblioteca: Ira conter as funcionalidades dos clientes e funcionários. Esse arquivo irá possibilitar
-que os usuários enviem requisições ao servidor.
+Biblioteca: Ira conter as funcionalidades dos clientes. Esse arquivo irá possibilitar que os usuários enviem requisições ao servidor.
+
+BibliotecaFuncionário.py: Arquivo que irá conter as funcionalidades dos funcionários. Esse arquivo irá possibilitar que os funcionários enviem requisições ao servidor.
 
