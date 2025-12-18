@@ -25,19 +25,33 @@ de conseguirmos registrar todos os alugúeis feitos no sistema.
 Tela de Login Para Clientes: Local onde os clientes irão realizar o seu 
 login no sistema (com cpf e senha)
 
+status: Feito
+
 Tela de login para funcionários: Tela onde os funcionarios poderão
 realizar o seu login no sistema (com id e senha)
+
+Status: Feito
 
 Tela de cadastro de clientes: Tela onde os clientes irão criar cadastros
 no sistema
 
+Status: Feito
+
 Tela de cadastro de funcionários: Tela onde os funcionários irão criar
 cadastros no sistema (somente funcionários podem cadastrar funcionários)
 
+status: Feito
+
+
 Tela de cadastro de livros: Tela onde apenas os funcionários poderão cadastrar livros
+
+status: Feito
+
 
 Tela de atualização de estoques de livros: Tela onde o funcionário poderá
 atualizar a quantidade de estoques de livros.
+
+status: Feito
 
 Tela de exclusão de livros: Tela que o funcionário podera excluir livros.
 
@@ -58,6 +72,8 @@ logout de clientes: Permite que o cliente saia da sua conta.
 logout de funcionários: Permite que o funcionário saia da sua conta.
 
 Tela de informações de clientes : Tela que possibilitara que o funcionário visualize os alugueis de clientes.
+
+Tela de pesquisa de livros: Tela onde funcionários poderão pesquisar informações sobre os livros.
 
                             Regras do sistema
 

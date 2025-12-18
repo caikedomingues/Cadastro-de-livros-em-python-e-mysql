@@ -227,4 +227,72 @@ def cadastrarLivro(isbn, titulo, autor, ano_publicacao, quantidade):
         conexao.close()
     
 
+
+# Ira atualizar o estoque de livros cadastrados no sistema. A função
+# irá receber como argumento o isbn do livro e a quantidade de novos
+# produtos no estoque
+def atualiza_estoque_livro(isbn, quantidade):
+    
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis
+    # erros de execução.
+    try:
         
+        # Ira conectar o usuário com o servidor do sistema
+        conexao = conectar()
+        
+        # Sera responsável por enviar requisições ao servidor
+        cursor = conexao.cursor()
+        
+        # Ira selecionar a quantidade do isbn (livro) solicitado. (de
+        # forma segura).
+        selecao = "SELECT quantidade FROM livros WHERE isbn = %s"
+        
+        # Ira enviar a requisição ao servidor
+        cursor.execute(selecao, (isbn))
+        
+        # Ira armazenar o valor da quantidade atual de livros no
+        # estoques.
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            
+            # Se o isbn nao for encontrado iremos imprimir essa mensagem
+            # e dar um return que irá encerrar a execução do bloco.
+            print("Livro não encontrado")
+            
+            return
+        
+        # Ira acessar a quantidade atual de estoques do livro solicitado
+        resultado = resultado[0]
+        
+        # Comando que irá atualizar os dados no banco de dados (de forma
+        # segura).
+        atualizacao_estoque = "UPDATE livros SET quantidade = %s + %s WHERE isbn = %s"
+        
+        # Ira executar (enviar a requisição) o comando de atualização de
+        # estoque
+        cursor.execute(atualizacao_estoque, (resultado, quantidade, isbn))
+        
+        # Ira gravar a atualização no servidor
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Estoque atualizado com sucesso")
+        
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a lógica ou sintaxe
+        print("Erro ao atualizar o estoque: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar falhas na comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+        
+    finally:
+        
+        # Ira encerrar a conexão com o objetivo de evitar o vazamento
+        # de dados.
+        conexao.close()
+    
+   
