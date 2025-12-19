@@ -42,11 +42,9 @@ cadastros no sistema (somente funcionários podem cadastrar funcionários)
 
 status: Feito
 
-
 Tela de cadastro de livros: Tela onde apenas os funcionários poderão cadastrar livros
 
 status: Feito
-
 
 Tela de atualização de estoques de livros: Tela onde o funcionário poderá
 atualizar a quantidade de estoques de livros.
@@ -55,8 +53,14 @@ status: Feito
 
 Tela de exclusão de livros: Tela que o funcionário podera excluir livros.
 
+status: Feito
+
 Tela de livros disponiveis: Irá conter as informações de todos os livros
 cadastrados pelos funcionários
+
+status: Feito
+
+Tela de criação de aluguéis: Tela onde o cliente poderá alugar livros
 
 Tela de livros alugados pelos clientes: irá conter as informações dos livros que o cliente logado
 no sistema alugou.

@@ -261,6 +261,50 @@ def exibir_livros_disponiveis():
         
         # Irá encerrar a conexão com o objetivo de evitar vazamento de dados.
         conexao.close()
+
+
+def criarAluguel(cpf_logado, isbn):
+    
+    try:
+        
+        conexao = conectar()
+        
+        cursor = conexao.cursor()
+        
+        selecao_isbn = "SELECT isbn FROM livros WHERE isbn = %s"
+        
+        cursor.execute(selecao_isbn, (isbn))
+        
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            
+            print("Livro não encontrado")
+            
+            return
+    
+        insercao_aluguel = "INSERT INTO alugueis (cpf_cliente, isbn_do_livro, data_devolucao) VALUES (%s, %s, CURDATE() + INTERVAL 30 DAY)"
+    
+        cursor.execute(insercao_aluguel, (cpf_logado, isbn))
+    
+        conexao.commit()
+    
+        print("Livro alugado com sucesso")
+    
+    except pymysql.ProgrammingError as erro:
+        
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        conexao.close()
+    
+            
+        
         
 
         
