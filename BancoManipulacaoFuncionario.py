@@ -294,5 +294,69 @@ def atualiza_estoque_livro(isbn, quantidade):
         # Ira encerrar a conexão com o objetivo de evitar o vazamento
         # de dados.
         conexao.close()
+
+
+# Função que irá excluir livros do sistema usando como argumento o isbn.
+def excluirLivro(isbn):
+    
+    # Irá inspecionar o bloco com o objetivo de capturar possiveis
+    # erros.
+    try:
+        
+        # Ira conectar o usuário com o servidor.
+        conexao = conectar()
+        
+        # Irá enviar as requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira selecionar o livro solicitado usando o isbn (de forma
+        # segura usando o '%s').
+        selecao = "SELECT isbn FROM livros WHERE isbn = %s"
+        
+        # Ira enviar seleçao para o servidor.
+        cursor.execute(selecao, (isbn))
+        
+        # Ira armazenar o valor da selecão (o isbn ou o None, caso o
+        # valor não exista).
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            
+            # Se o resultado for None, ou seja, se o isbn não for
+            # encontrado, vamos imprimir essa mensagem e dar um return
+            # que encerra a execução do bloco de código.
+            print("Livro não encontrado")
+            
+            return
+        
+        # Comando que irá executar a exclusão do livro solicitado
+        exclusao = "DELETE FROM livros WHERE isbn = %s"
+        
+        # Ira enviar a exclusão para o servidor
+        cursor.execute(exclusao, (isbn))
+        
+        # Ira gravar a exclusão do livro no servidor.
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Livro excluido com sucesso")
+        
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a lógica ou sintaxe
+        print("Erro ao excluir o livro: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros relacionados a comunicação do servidor
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Irá encerrar a conexão com o banco de dados com o objetivo
+        # de evitar o vazamento de dados.
+        conexao.close()
+
+        
     
    
