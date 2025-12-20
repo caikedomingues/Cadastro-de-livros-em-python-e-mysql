@@ -62,10 +62,20 @@ status: Feito
 
 Tela de criação de aluguéis: Tela onde o cliente poderá alugar livros
 
+Status: Feito
+
+
 Tela de livros alugados pelos clientes: irá conter as informações dos livros que o cliente logado
 no sistema alugou.
 
-Tela de atualização de cadastros de clientes: Tela que o usuário irá atualizar os dados (o telefone por exemplo)
+Status: Feito
+
+Tela de atualização de cadastros de clientes: Tela que o usuário irá atualizar os dados (o telefone por exemplo). Observação:
+O unico dado que o cliente não poderá atualizar é o seu cpf.
+
+Status: Feito
+
+Tela de atualização de senha do cliente: Tela onde o cliente poderá atualizar a sua senha.
 
 Tela de atualização de senha de funcionários: Tela que o funcionário poderá atualizar a sua senha.
 
@@ -78,6 +88,8 @@ logout de funcionários: Permite que o funcionário saia da sua conta.
 Tela de informações de clientes : Tela que possibilitara que o funcionário visualize os alugueis de clientes.
 
 Tela de pesquisa de livros: Tela onde funcionários poderão pesquisar informações sobre os livros.
+
+Tela de exclusão de conta: Tela onde o usuário podera excluir a sua conta.
 
                             Regras do sistema
 

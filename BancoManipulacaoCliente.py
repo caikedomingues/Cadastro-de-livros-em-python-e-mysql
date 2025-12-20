@@ -328,8 +328,111 @@ def criarAluguel(cpf_logado, isbn):
         # Irá encerrar a conexão com o banco de dados com o intuito de
         # evitar o vazamento de dados.
         conexao.close()
+
+
+# Função que tem como objetivo exibir os livros alugados pelo usuário
+# usando como argumento o cpf do usuário logado.  
+def exibir_livros_alugados(cpf_logado):
     
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis erros
+    # de execução do bloco.
+    try:
+        
+        # Irá conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # Irá enviar as requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Irá consultar os livros alugados na tabela de aluguéis
+        selecao_livro_alugado = "SELECT * FROM alugueis WHERE cpf_cliente = %s"
+        
+        # Irá enviar a consulta ao servidor.
+        cursor.execute(selecao_livro_alugado, (cpf_logado,))
+        
+        # Ira armazenar todas as linhas do banco
+        resultados = cursor.fetchall()
+        
+        # Observação: Vamos usar o len na verificação por conta da diferença
+        # de retorno entre o fetchone e o fetchall. 
+        
+        # Fetchone: Se o fetchone não encontrar nada, ele retorna None. Por 
+        # isso, o  if resultado is None funciona perfeitamente para verificar a existência de um determinado dado
+        
+        # Fetchall: Já o fetchall retorna uma lista vázia caso a tabela não
+        # tenha os dados consultados. Por isso, é mais eficiente verificar
+        # o tamanho da lista para descobrir a existência dos dados.
+        if  len(resultados) == 0:
             
+            # Se o usuário não tiver livros alugados, iremos imprimir essa mensagem
+            print("Não há livros alugados no momento")
+        
+        else:
+            
+            # Se o usuário tiver livros alugados, iremos imprimir essa mensagem
+            print("Livros alugados: ")
+            
+            # Após a impressão da mensagem, vamos percorrer a variável resultados
+            # (que contém a lista de valores encontrados) com o objetivo de mostra-los
+            # na tela.
+            for livros in resultados:
+                
+                print(livros)
+    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a sintaxe ou lógica
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros na comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Ira encerrar a conexão com o banco para evitar vazamento de dados.
+        conexao.close()
+
+# Ira atualizar os dados cadastrais do usuário usando como  argumento o nome,
+# o telefone, o email e o cpf logado no sistema.
+def atualizar_dados( nome, telefone, email, cpf_logado):
+    
+    try:
+        
+        # Ira conectar o usuário com o banco de dados.
+        conexao = conectar()
+        
+        # Ira enviar as requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira conter o comando de atualização dos dados (de forma segura).
+        consulta = "UPDATE clientes SET nome = %s, telefone = %s, email =  %s WHERE cpf = %s"
+        
+        # Irá atualizar os dados no servidor.
+        cursor.execute(consulta, (nome, telefone, email, cpf_logado))
+        
+        # Ira gravar a atualização no servidor
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Dados atualizados com sucesso")
+        
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros de sintaxe ou lógica
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros relacionados a comunicação com o servidor      
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Ira fechar a conexão para evitar vazamento de dados
+        conexao.close()
+        
         
         
 
