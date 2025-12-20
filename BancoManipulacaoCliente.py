@@ -263,44 +263,70 @@ def exibir_livros_disponiveis():
         conexao.close()
 
 
+# Função que possibilitara o cliente alugue livros no sistema usando como
+# argumento o cpf do usuário logado no sistema e o isbn do livro que será
+# alugado.
 def criarAluguel(cpf_logado, isbn):
     
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis
+    # erros.
     try:
         
+        # Irá conectar o usuário ao servidor.
         conexao = conectar()
         
+        # Irá enviar as requisições ao servidor.
         cursor = conexao.cursor()
         
+        # Ira consultar o isbn solicitado pelo usuário com o objetivo
+        # de verificar a existência do livro no sistema.
         selecao_isbn = "SELECT isbn FROM livros WHERE isbn = %s"
         
+        # Ira enviar a consulta ao servidor.
         cursor.execute(selecao_isbn, (isbn))
         
+        # Ira armazenar apenas uma linha do banco (Linha que contém o isbn informado).        
         resultado = cursor.fetchone()
         
         if resultado is None:
             
+            # Se o isbn não for encontrado vamos imprimir essa mensaegem.
+            # e dar um return que encerrá a execução do bloco e evitar
+            # a inserção do dado passado pelo usuário.
             print("Livro não encontrado")
             
             return
-    
+
+        # Comando que irá inserir dados no sistema.
+        # CURDATE(): Ira pegar a data e a hora atual do sistema
+        # INTERVAL 30 DAY: Irá calcular os 30 dias (baseado no dia
+        # do aluguel)
         insercao_aluguel = "INSERT INTO alugueis (cpf_cliente, isbn_do_livro, data_devolucao) VALUES (%s, %s, CURDATE() + INTERVAL 30 DAY)"
-    
+
+        # Irá enviar a inserção para o servidor.
         cursor.execute(insercao_aluguel, (cpf_logado, isbn))
-    
+
+        # Irá gravar a inserção na base de dados.
         conexao.commit()
-    
+
+        # Mensagem de sucesso.
         print("Livro alugado com sucesso")
     
     except pymysql.ProgrammingError as erro:
         
+        # Ira tratar erros de lógica ou sintaxe, como por exemplo,
+        # a inserção de um dado que já existe.
         print("Erro de sintaxe ou lógica: ", erro)
     
     except pymysql.OperationalError as erro:
         
+        # Ira tratar erros na comunicação com o servidor
         print("Falha na comunicação com o servidor: ", erro)
     
     finally:
         
+        # Irá encerrar a conexão com o banco de dados com o intuito de
+        # evitar o vazamento de dados.
         conexao.close()
     
             
