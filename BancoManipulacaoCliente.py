@@ -305,6 +305,12 @@ def criarAluguel(cpf_logado, isbn):
 
         # Irá enviar a inserção para o servidor.
         cursor.execute(insercao_aluguel, (cpf_logado, isbn))
+        
+        # Irá atualizar o estoque de livros após o aluguel
+        atualizar_estoque = "UPDATE livros SET quantidade = quantidade - 1 WHERE isbn = %s"
+        
+        # Irá enviar a atualização para o servidor.
+        cursor.execute(atualizar_estoque, (isbn))
 
         # Irá gravar a inserção na base de dados.
         conexao.commit()
@@ -433,6 +439,68 @@ def atualizar_dados( nome, telefone, email, cpf_logado):
         # Ira fechar a conexão para evitar vazamento de dados
         conexao.close()
         
+        
+
+# Função que irá atualizar a senha do usuário usando como argumento 
+# a senha nova e o cpf do cliente logado
+def atualizar_senha(senha_nova, cpf_logado):
+
+    try:
+        
+        # Ira conectar o usuário ao servidor
+        conexao = conectar()
+        
+        # Ira enviar as requisições ao servidor
+        cursor = conexao.cursor()
+        
+        # O salt é uma sequência aleatória de bytes exclusiva que
+        # é misturada a senha antes do hash. O argumento rounds=12
+        # define o número de iterações, aumentando a segurança e o tempo de processamento.
+        sequencia_aleatoria_de_bytes = bcrypt.gensalt(rounds=12)  
+        
+        # Codificação: O bcycrypt (assim como a maioria das funções 
+        # criptografadas) só trabalha com bytes (dados binários), não
+        # com strings de texto comuns. Esta linha converte a senha de 
+        # texto para o formato de bytes, usando a codificação universal utf-8
+        senha_bytes = senha_nova.encode('utf-8')
+        
+        # Hashing: Esta é a etapa principal, o bcrypt pega senha (em bytes) e a sequencia aleatória de bytes (salt) e as mistura,
+        # aplicando o algoritmo de hashing. O resultado é o hash final,
+        # que é unidirecional (não pode ser revertido).
+        senha_hash = bcrypt.hashpw(senha_bytes, sequencia_aleatoria_de_bytes)
+        
+        # Armazenamento: O resultado do bcrypt.hashpw é um objeto
+        # bytes. Como a coluna do nosso banco de dados (senha) é do
+        # tipo varchar, esta linha converte o hash de volta para uma
+        # string de texto.
+        senha_hash_string = senha_hash.decode('utf-8')
+       
+       # Comando que irá atualizar a senha do usuário 
+        update_senha = "UPDATE clientes SET senha = %s WHERE cpf = %s"
+        
+        # Irá enviar a requisição ao servidor
+        cursor.execute(update_senha, (senha_hash_string, cpf_logado))
+        
+        # Irá gravar a atualização no servidor.
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Senha atualizada com sucesso")
+        
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros de lógica ou sintaxe
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros na comunicação com o servidor.
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Irá encerrar a conexão com o objetivo de evitar vazamento de dados.
+        conexao.close()
         
         
 
