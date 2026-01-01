@@ -24,61 +24,50 @@ de conseguirmos registrar todos os alugúeis feitos no sistema.
 
 Tela de Login Para Clientes: Local onde os clientes irão realizar o seu 
 login no sistema (com cpf e senha)
-
 status: Feito
 
 Tela de login para funcionários: Tela onde os funcionarios poderão
 realizar o seu login no sistema (com id e senha)
-
 Status: Feito
 
 Tela de cadastro de clientes: Tela onde os clientes irão criar cadastros
 no sistema
-
 Status: Feito
 
 Tela de cadastro de funcionários: Tela onde os funcionários irão criar
 cadastros no sistema (somente funcionários podem cadastrar funcionários)
-
 status: Feito
 
 Tela de cadastro de livros: Tela onde apenas os funcionários poderão cadastrar livros
-
 status: Feito
 
 Tela de atualização de estoques de livros: Tela onde o funcionário poderá
 atualizar a quantidade de estoques de livros.
-
 status: Feito
 
 Tela de exclusão de livros: Tela que o funcionário podera excluir livros.
-
 status: Feito
 
 Tela de livros disponiveis: Irá conter as informações de todos os livros
 cadastrados pelos funcionários
-
 status: Feito
 
 Tela de criação de aluguéis: Tela onde o cliente poderá alugar livros
-
 Status: Feito
 
 Tela de livros alugados pelos clientes: irá conter as informações dos livros que o cliente logado
-no sistema alugou.
- 
+no sistema alugou. 
 Status: Feito
 
 Tela de atualização de cadastros de clientes: Tela que o usuário irá atualizar os dados (o telefone por exemplo). Observação:
 O unico dado que o cliente não poderá atualizar é o seu cpf.
-
 Status: Feito
 
 Tela de atualização de senha do cliente: Tela onde o cliente poderá atualizar a sua senha.
-
 Status: Feito
-
+ 
 Tela de atualização de senha de funcionários: Tela que o funcionário poderá atualizar a sua senha.
+status: Feito
 
 Tela de exclusão de funcionários: Onde funcionários podem excluir outros funcionários.
 

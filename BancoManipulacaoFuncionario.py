@@ -356,7 +356,60 @@ def excluirLivro(isbn):
         # Irá encerrar a conexão com o banco de dados com o objetivo
         # de evitar o vazamento de dados.
         conexao.close()
-
+    
+def atualizar_senha(senha_nova, id_logado):
+    
+    #Irá inspecionar o bloco com o objetivo de capturar possiveis erros.
+    try:
+        
+        # Ira conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # Ira enviar as requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira criar uma sequência aleatória de bytes (numeros 
+        # binários) que serão utilizados na criptografia da
+        # senha. O round define a quantidade de vezes que o gensalt
+        # irá ser executado com o objetivo de dificultar o processamento
+        # do computador de um hacker caso ele tente "adivinhar" as senhas.
+        sequencia_aleatoria_de_bytes = bcrypt.gensalt(rounds=12)  
+        
+        # Ira transformar a senha em bytes (numeros binários)
+        senha_bytes = senha_nova.encode('utf-8')
+        
+        # Ira criptografar a senha usando os bytes da sequência aleatória
+        # e o bytes da senha informada. 
+        senha_hash = bcrypt.hashpw(senha_bytes, sequencia_aleatoria_de_bytes)
+        
+        # Ira transformar a senha criptografada em string, dessa maneira,
+        # poderemos armazenar a senha no banco de dados.
+        senha_hash_string = senha_hash.decode('utf-8')
+        
+        # Ira conter o comando que atualizara a senha do funcionário
+        update_senha = "UPDATE funcionarios SET senha = %s WHERE id = %s"
+        
+        # Ira enviar a atualização ao servidor.
+        cursor.execute(update_senha, (senha_hash_string, id_logado))
+        
+        # Ira gravar a atualização no servidor.
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Senha atualizada com sucesso")
+    
+    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros de sintaxe ou lógica
+        print("Erro de lógica ou sintaxe: ", erro)  
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar falhas na comunicação com o servidor.
+        print("Falha na comunicação com o servidor: ", erro)
+    
+        
         
     
    
