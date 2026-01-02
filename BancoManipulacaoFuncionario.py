@@ -470,5 +470,139 @@ def excluir_funcionario(id):
         conexao.close()
        
         
+# Função que irá mostrar as informações de todos os aluguéis registrados no sistema.    
+def todos_alugueis_clientes():
     
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis erros de execução.
+    try:
+        
+        # Ira conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # Ira enviar requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira consultar os aluguéis no servidor.
+        consulta = "SELECT * FROM alugueis"
+        
+        # Ira enviar a requisição ao servidor.
+        cursor.execute(consulta)
+        
+        # Ira conter todas as linhas da consulta ao servidor.
+        resultado = cursor.fetchall()
+        
+        print("Lista de Aluguéis")
+        
+        if len(resultado) == 0:
+            
+            # Se a lista de alugueis estiver vázia, iremos apresentar
+            # esse texto.
+            print("Não há aluguéis no sistema")
+        
+        else:
+            
+            # Caso contrário, iremos percorrer e imprimir a lista
+            # de valores adquiridos na consulta ao servidor.
+            for consulta in resultado:
+            
+             print(consulta)
+    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a lógica ou sintaxe.
+        print("Falha ao exibir a lista de aluguéis: ", erro)    
+        
+    except pymysql.OperationalError as erro:    
+        
+        # Ira tratar erros na comunicação com o servidor
+        print("Falha na comunicação com o servidor")
+
+    finally:
+        
+        # Ira encerrar a conexão com o objetivo de evitar o vazamento
+        # de dados.
+        conexao.close()
+
+
+# Função que irá mostrar as informações de alugueis de um cliente 
+# especifico usando o cpf do cliente que queremos consultar.
+def aluguel_cliente (cpf_cliente):
+    
+    # Irá inspecionar o bloco de código com o objetivo de capturar possiveis erros de execução.
+    try:
+        
+        # Ira conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # Irá enviar requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira consultar o cpf na lista de clientes com o objetivo de
+        # verificar se o cliente existe no sistema. (de forma segura).
+        consulta_cliente = "SELECT cpf FROM clientes WHERE cpf = %s"
+        
+        # Ira enviar a requisição ao servidor.
+        cursor.execute(consulta_cliente, (cpf_cliente))
+        
+        # Ira armzenar a linha do servidor que contém (ou não
+        # caso o resultado seja None) o cpf consultado no sistema.
+        resultado_cliente = cursor.fetchone()
+        
+        if resultado_cliente is None:
+            
+            # Se o resultado da consulta for None, iremos imprimir
+            # essa mensagem e dar um return que encerrará a execução
+            # do sistema.    
+            print("Cliente não encontrado")
+            
+            return
+
+        else:
+            
+            # Caso o cpf exista no sistema, vamos verificar se o cliente
+            # ja possui livros alugados no sistema.
+            
+            # Ira conter a consulta de aluguéis no servidor.
+            consulta_alugueis = "SELECT * FROM alugueis WHERE cpf_cliente = %s"
+            
+            # Ira enviar a requisição ao servidor.
+            cursor.execute(consulta_alugueis, (cpf_cliente))
+            
+            # Ira armaenar a lista de valores adquiridos na consulta
+            resultado_alugueis = cursor.fetchall()
+            
+            if len(resultado_alugueis) == 0:
+                
+                # Se o tamanho da lista for 0, significa que a lista de
+                # livros do cliente está vázia, logo ele ainda não possui
+                # livros alugados no sistema.
+                print("O cliente ", cpf_cliente, "não possui livros alugados")
+            
+            else:
+                
+                # Caso contrário, o cliente possui aluguéis em sua lista
+                print("Lista de alugueis do cliente ", cpf_cliente)
+                
+                for aluguel in resultado_alugueis:
+                    
+                    # Iremos percorrer e imprimir a lista de aluguéis.
+                    print(aluguel)   
    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros de sintaxe ou lógica
+        print("Falha ao mostrar a lista de alugueis do cliente ", cpf_cliente, ": ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros relacionados a comunicação com o servidor
+        print("Falha na comunicação com o servidor")
+        
+    finally:
+        # Ira encerrar a conexão com o objetivo de evitar o vazamento de
+        # dados.
+        conexao.close()
+        
+        
+        
+        
