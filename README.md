@@ -70,6 +70,7 @@ Tela de atualização de senha de funcionários: Tela que o funcionário poderá
 status: Feito
 
 Tela de exclusão de funcionários: Onde funcionários podem excluir outros funcionários.
+status: feito
 
 logout de clientes: Permite que o cliente saia da sua conta.
 

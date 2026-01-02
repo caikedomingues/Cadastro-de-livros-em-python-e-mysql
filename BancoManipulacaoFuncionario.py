@@ -408,8 +408,67 @@ def atualizar_senha(senha_nova, id_logado):
         
         # Ira tratar falhas na comunicação com o servidor.
         print("Falha na comunicação com o servidor: ", erro)
+
+
+# Função que irá excluir funcionários do sistema usando o id
+# como argumento.
+def excluir_funcionario(id):
     
+    # Irá inspecionar o bloco de código com o objetivo de capturar
+    # possiveis de erros de execução do bloco.
+    try:
         
+        # Ira conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # Irá enviar requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Comando que irá excluir o funcionário (de forma segura)
+        selecao = "SELECT id FROM funcionarios WHERE id = %s"
+        
+        # Ira enviar a requisição ao servidor
+        cursor.execute(selecao, (id))
+        
+        # Ira armzernar o Valor da consulta (o valor encontrado ou o None caso o valor não exista).
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            
+            # Se o resultado for None, iremos imprimir essa mensagem e dar um return
+            # que impedira que o programa continue executando o trecho (a requisição
+            # de exclusão dos dados)
+            print("Funcionário não encontrado")
+            
+            return
+        
+        # Ira conter o comando de exclusão dos dados.
+        exclusao = "DELETE FROM funcionarios WHERE id = %s"
+        
+        # Ira enviar a requisição ao servidor
+        cursor.execute(exclusao, (id))
+        
+        # Irá gravar a exclusão no servidor.
+        conexao.commit()
+        
+        # Mensagem de sucesso.
+        print("Funcionário excluido com sucesso")
+        
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a sintaxe ou lógica
+        print("Erro ao excluir o funcionário: ", erro)
+        
+    except pymysql.OperationalError as erro:
+        
+        # Irá tratar erros relacionados a comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+        
+    finally:
+       
+       # Ira fechar a conexão com o objetivo de evitar o vazamento de dados
+        conexao.close()
+       
         
     
    
