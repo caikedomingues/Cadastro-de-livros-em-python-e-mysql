@@ -602,7 +602,75 @@ def aluguel_cliente (cpf_cliente):
         # Ira encerrar a conexão com o objetivo de evitar o vazamento de
         # dados.
         conexao.close()
+
+# Função que irá pesquisar as informações dos livros usando o isbn.
+def pesquisa_livro(isbn):
+    
+    # Irá inspecionar o bloco com objetivo de capturar possiveis erros
+    # de execução do trecho
+    try:
         
+        # Irá conectar o usuário ao servidor.
+        conexao = conectar()
+        
+        # será responsável por enviar as requisições ao servidor.
+        cursor = conexao.cursor()
+        
+        # Ira conter o comando que irá verificar se o isbn
+        # informado existe no sistema.
+        consulta_livro = "SELECT isbn FROM livros WHERE isbn = %s"
+        
+        # Ira enviar a requisição de consulta ao servidor (de forma
+        # segura).
+        cursor.execute(consulta_livro, (isbn))
+        
+        # Ira conter o resultado da consulta (o isbn ou o None caso o
+        # isbn não exista).
+        resultado_consulta = cursor.fetchone()
+        
+        if resultado_consulta is None:
+            # Caso o isbn não exista no sistema, vamos imprimir essa
+            # mensagem e dar um return que impedirá a continuação da
+            # execução do sistema.
+            print("Livro não encontrado")
+            
+            return
+
+        else:
+            
+            # Caso o isbn exista, vamos iniciar o processo de acesso
+            # aos dados do livro solicitado.
+            informacoes_livros = "SELECT * FROM livros WHERE isbn = %s"
+            
+            # Irá enviar a requisição ao sistema.
+            cursor.execute(informacoes_livros, (isbn))
+            
+            # Ira conter todas as linhas da consulta realizada
+            resultado_livros = cursor.fetchall()
+            
+            print("Informações do livro: ", isbn)
+            
+            for livro in resultado_livros:
+                
+                # Irá percorrer a lista de valores e imprimir 
+                # os resultados da consulta.    
+                print(livro)
+    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a sintaxe ou lógica.
+        print("Erro ao pesquisar o livro: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Irá tratar erros na comunicação com o servidor.
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Irá encerrar a conexão com o objetivo de evitar o vazamento
+        # de dados.
+        conexao.close()
         
         
         

@@ -80,6 +80,7 @@ Tela de informações de clientes : Tela que possibilitara que o funcionário vi
 status: Feito
 
 Tela de pesquisa de livros: Tela onde funcionários poderão pesquisar informações sobre os livros.
+status: Feito
 
 Tela de exclusão de conta: Tela onde o usuário podera excluir a sua conta.
 
