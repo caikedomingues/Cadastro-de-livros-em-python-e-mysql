@@ -501,7 +501,95 @@ def atualizar_senha(senha_nova, cpf_logado):
         
         # Irá encerrar a conexão com o objetivo de evitar vazamento de dados.
         conexao.close()
+
+# Função que irá excluir a conta do usuário usando o cpf e a senha
+def excluir_conta(cpf_logado, senha):
+    
+    # Irá inspecionar o bloco de código com o objetivo de capturar
+    # possiveis erros de execução do bloco.
+    try:
         
+        # Ira conectar o usuário ao servidor.
+        conexao = conectar()
+       
+       # Irá enviar requisições ao servidor         
+        cursor = conexao.cursor()
+        
+        # Irá conter o comando que irá consultar se a senha informada
+        # existe no sistema (de forma segura)
+        consulta_senha = "SELECT senha FROM clientes WHERE cpf = %s"
+        
+        # Irá enviar a consulta ao servidor
+        cursor.execute(consulta_senha, (cpf_logado))
+        
+        # irá conter o resultado da consulta (O hash da senha ou o  None caso a senha não exista). o fetchone irá armazenar apenas a linha
+        # que contém o hash da senha.
+        resultado_senha = cursor.fetchone()
+        
+        # Ira armzenar a senha criptografada encontrada no servidor
+        senha_criptografada = resultado_senha[0]
+        
+        # Ira transformar senha informada e a senha criptografa em um conjunto de bytes (núemeros binários) com o objetivo de 
+        # tornar as 2 senhas iguais (em relação ao tipo do dado). 
+        senha_informada = senha.encode('utf-8')
+            
+        hash_bytes = senha_criptografada.encode('utf-8')
+        
+        # Após transformar as senhas em um conjunto de bytes,
+        # vamos usar a função checkpw da biblioteca bcrypt
+        # que irá verificar se as senhas são iguais (até onde
+        # entendi, ele vai verificar se os valores em bytes
+        # das senhas são iguais).
+        if bcrypt.checkpw(senha_informada, hash_bytes):
+
+                # Se a senha existir, vamos iniciar o processo de
+                # exclusão da conta. Como o cpf do cliente é chave
+                # estrangeira da tabela de alugueis (que contém os
+                # alugueis dos clientes), é necessário excluir não
+                # só a conta, como também os alugueis do cliente 
+                # que solicitou a exclusão.
+                
+                # Ira conter o comando que irá excluir os alugueis
+                # do cliente.
+                exclusao_alugueis = "DELETE FROM alugueis WHERE cpf_cliente = %s"
+                
+                # Irá enviar a requisição de exclusão ao servidor
+                # (exclusão dos aluguéis)
+                cursor.execute(exclusao_alugueis, (cpf_logado))
+                
+                # Irá conter o comando de exclusão dos dados do cliente
+                exclusao_cliente = "DELETE FROM clientes WHERE cpf = %s"
+                
+                # Ira enviar a requisição de exclusão ao servidor
+                # (exclusão do cliente).
+                cursor.execute(exclusao_cliente, (cpf_logado))
+                
+                # Ira gravar a exclusão no servidor
+                conexao.commit()
+                      
+                # Mensagem de sucesso.          
+                print("Conta excluída com sucesso")
+            
+        else:
+                # Mensagem que será impressa se a senha informada
+                # não existir.
+                print("Senha incorreta, tente novamente")
+    
+    except pymysql.ProgrammingError as erro:
+        
+        # Ira tratar erros relacionados a sintaxe ou lógica
+        print("Erro de sintaxe ou lógica: ", erro)
+    
+    except pymysql.OperationalError as erro:
+        
+        # Ira tratar erros na comunicação com o servidor
+        print("Falha na comunicação com o servidor: ", erro)
+    
+    finally:
+        
+        # Ira encerrar a conexão com o banco de dados
+        conexao.close()
+    
         
         
 

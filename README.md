@@ -82,7 +82,9 @@ status: Feito
 Tela de pesquisa de livros: Tela onde funcionários poderão pesquisar informações sobre os livros.
 status: Feito
 
-Tela de exclusão de conta: Tela onde o usuário podera excluir a sua conta.
+Tela de exclusão de conta: Tela onde o cliente podera excluir a sua conta.
+status: Feito
+
 
                             Regras do sistema
 
@@ -99,6 +101,10 @@ Tela de exclusão de conta: Tela onde o usuário podera excluir a sua conta.
 -> O cliente deve logar no sistema utilizando cpf e senha.
 
 -> O funcionário deverá logar no sistema usando nome e senha 
+
+-> Exclusão de contas de clientes: O cliente deve utilizar a sua senha
+para conseguir excluir a conta. Observação: Ele também deverá estar 
+logado no sistema.
 
 
                             Estruturas dos arquivos
