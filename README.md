@@ -73,8 +73,10 @@ Tela de exclusão de funcionários: Onde funcionários podem excluir outros func
 status: feito
 
 logout de clientes: Permite que o cliente saia da sua conta.
+status: Feito
 
 logout de funcionários: Permite que o funcionário saia da sua conta.
+Status: Feito
 
 Tela de informações de clientes : Tela que possibilitara que o funcionário visualize os alugueis de clientes.
 status: Feito
